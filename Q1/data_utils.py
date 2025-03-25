@@ -3,6 +3,7 @@ import torch
 import imageio
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.special import sph_harm
 
 from PIL import Image
 from plyfile import PlyData
@@ -210,5 +211,30 @@ def colours_from_spherical_harmonics(spherical_harmonics, gaussian_dirs):
                                     RGB colour.
     """
     ### YOUR CODE HERE ###
-    colours = None
+    # Convert Cartesian directions to spherical angles
+    x, y, z = gaussian_dirs[:, 0], gaussian_dirs[:, 1], gaussian_dirs[:, 2]
+    theta = torch.atan2(y, x)  # Azimuthal angle
+    phi = torch.acos(torch.clamp(z, -1.0, 1.0))  # Polar angle
+
+    # Number of SH coefficients per channel (48 total for L=4)
+    L = int((spherical_harmonics.shape[1] // 3)**0.5)  # Degree L = sqrt(48 / 3)
+
+    # Initialize colors
+    colours = torch.zeros((spherical_harmonics.shape[0], 3), device=spherical_harmonics.device)
+
+    # Compute SH contributions for each channel (R, G, B)
+    for l in range(L):
+        for m in range(-l, l + 1):
+            # Evaluate SH basis function Y_lm at all directions
+            Y_lm = sph_harm(m, l, theta.cpu().numpy(), phi.cpu().numpy()).real
+            Y_lm = torch.tensor(Y_lm, device=spherical_harmonics.device)
+
+            # Map (l, m) to flat index
+            idx = l * l + l + m
+
+            # Add contributions for each color channel
+            colours[:, 0] += spherical_harmonics[:, idx] * Y_lm  # Red channel
+            colours[:, 1] += spherical_harmonics[:, idx + L**2] * Y_lm  # Green channel
+            colours[:, 2] += spherical_harmonics[:, idx + 2 * L**2] * Y_lm  # Blue channel
+    
     return colours
