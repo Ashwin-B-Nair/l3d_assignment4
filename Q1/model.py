@@ -247,8 +247,8 @@ class Gaussians:
         ### YOUR CODE HERE ###
         R = p3d.transforms.quaternion_to_matrix(quats).to(self.device)
         S = torch.diag_embed(scales).to(self.device)
-        print("R shape:", R.shape)
-        print("S shape:", S.shape)
+        # print("R shape:", R.shape)
+        # print("S shape:", S.shape)
         cov_3D = torch.matmul(torch.matmul(torch.matmul(R, S), torch.transpose(S, 1, 2)), torch.transpose(R, 1, 2))  # (N, 3, 3)
         # cov_3D = R @ S @ R.transpose(-1, -2)
         return cov_3D
@@ -315,7 +315,7 @@ class Gaussians:
         ### YOUR CODE HERE ###
         # HINT: Do note that means_2D have units of pixels. Hence, you must apply a
         # transformation that moves points in the world space to screen space.
-        projected_points = camera.transform_points(means_3D)  # (N, 3)
+        projected_points = camera.transform_points_screen(means_3D)  # (N, 3)
         means_2D = projected_points[:, :2]  # (N, 2)
         return means_2D
 
