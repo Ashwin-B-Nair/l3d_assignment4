@@ -366,9 +366,9 @@ class Gaussians:
         # HINT: Refer to README for a relevant equation
         diff = points_2D - means_2D  #(N, H*W, 2)
         intermediate = torch.einsum("nhw,nij->nhw", diff, cov_2D_inverse)  #(N, H*W, 2)
-        
+        print(intermediate.shape)
         power = -0.5 * torch.sum(intermediate * diff, dim=-1)  # (N, H*W)
-
+        print(power.shape)
         return power 
 
     @staticmethod
