@@ -428,7 +428,7 @@ class Scene:
         """
         ### YOUR CODE HERE ###
         sorted_idx = torch.argsort(z_vals)
-        mask = sorted >= 0
+        mask = sorted_idx >= 0
         idxs = torch.masked_select(sorted_idx, mask)  # (N,)
 
         return idxs
