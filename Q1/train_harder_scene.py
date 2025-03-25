@@ -37,7 +37,7 @@ def setup_optimizer(gaussians):
         {'params': [gaussians.means], 'lr': 0.05, "name": "means"},
     ]
     optimizer = torch.optim.Adam(parameters, lr=0.0, eps=1e-15)
-    optimizer = None
+    # optimizer = None
 
     return optimizer
 
@@ -117,11 +117,14 @@ def run_training(args):
         # HINT: Set img_size to (128, 128)
         # HINT: Get per_splat from args.gaussians_per_splat
         # HINT: camera is available above
-        pred_img = None
+        pred_img, _, _ = scene.render(camera=camera, 
+                                      img_size=train_dataset.img_size,
+                                      bg_colour=(0.0, 0.0, 0.0),
+                                      per_splat=args.gaussians_per_splat)
 
         # Compute loss
         ### YOUR CODE HERE ###
-        loss = None
+        loss = torch.nn.functional.mse_loss(pred_img, gt_img)
 
         loss.backward()
         optimizer.step()
