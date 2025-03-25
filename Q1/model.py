@@ -247,6 +247,8 @@ class Gaussians:
         ### YOUR CODE HERE ###
         R = p3d.transforms.quaternion_to_matrix(quats).to(self.device)
         S = torch.diag_embed(scales).to(self.device)
+        print("R shape:", R.shape)
+        print("S shape:", S.shape)
         # cov_3D = torch.matmul(torch.matmul(torch.matmul(R, S), torch.transpose(S, 1, 2)), torch.transpose(R, 1, 2))  # (N, 3, 3)
         cov_3D = R @ S @ R.transpose(-1, -2)
         return cov_3D
