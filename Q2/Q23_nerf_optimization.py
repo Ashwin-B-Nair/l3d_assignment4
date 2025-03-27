@@ -170,7 +170,7 @@ def optimize_nerf(
             ### YOUR CODE HERE ###
             # print(f"Rendered image shape: {pred_rgb.shape}")
             # assert pred_rgb.shape[-2:] == (512, 512), f"Rendered image shape is {pred_rgb.shape[-2:]}, expected (512, 512)"
-            pred_rgb = torch.nn.functional.interpolate(pred_rgb, (512, 512))
+            # pred_rgb = torch.nn.functional.interpolate(pred_rgb, (512, 512))
             latents = sds.encode_imgs(pred_rgb)
             if not args.view_dep_text:
               loss = sds.sds_loss(latents, text_cond, text_uncond)
@@ -213,7 +213,7 @@ def optimize_nerf(
             if global_step % 100 == 0:
                 loss_dict[global_step] = loss.item()
                 # save the nerf rendering as the logging output, instead of the decoded latent
-                pred_rgb = torch.nn.functional.interpolate(pred_rgb, (512, 512))
+                # pred_rgb = torch.nn.functional.interpolate(pred_rgb, (512, 512))
                 imgs = (
                     pred_rgb.detach().cpu().permute(0, 2, 3, 1).numpy()
                 )  # torch to numpy, shape [1, 512, 512, 3]
