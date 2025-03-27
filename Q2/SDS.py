@@ -167,11 +167,7 @@ class SDS:
         ### YOUR CODE HERE ###
         gradient = grad_scale * w[:, None, None, None] * (noise_pred - noise)  # Expanding w from (batch_size,) -> (batch_size, 1, 1, 1)  to match difference 
         # gradient = w * grad_scale * (noise_pred - noise)
-        gradient = torch.nan_to_num(gradient)
+        # gradient = torch.nan_to_num(gradient)
         target = (latents - gradient).detach()                       # 
-        # target_img = self.decode_latents(target)
-        # target_img = torch.tensor(target_img).permute(2, 0, 1).unsqueeze(0)    #(H,W,C) -> (C, H, W) -> (batch_size, C, H, W)
-        loss =  F.mse_loss(latents.float(), target, reduction='sum') / latents.shape[0]
-        # loss =  F.mse_loss(latents, target) 
-                    
+        loss =  F.mse_loss(latents.float(), target, reduction='sum') / latents.shape[0]         
         return loss
