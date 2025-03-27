@@ -160,7 +160,7 @@ def optimize_nerf(
                 text_cond = embeddings["default"]
             else:
                 ### YOUR CODE HERE ###
-                pass
+                print("view dep")
                 front = embeddings["front"]
                 back = embeddings["back"]
                 side = embeddings["side"]
@@ -177,6 +177,7 @@ def optimize_nerf(
             if not args.view_dep_text:
               loss = sds.sds_loss(latents, text_cond, text_uncond)
             else:
+                print("view dep")
                 loss_front = sds.sds_loss(latents, front, text_uncond)
                 loss_back = sds.sds_loss(latents, back, text_uncond)
                 loss_side = sds.sds_loss(latents, side, text_uncond)
