@@ -81,7 +81,7 @@ def optimize_mesh_texture(
     # create a list of query cameras as the training set
     # Note: to create the dataset, you can either pre-define a list of query cameras as below or randomly sample a camera pose on the fly in the training loop.
     query_cameras = [] # optional
-    azimuth = np.linspace(-180, 180, 10)
+    azimuth = np.linspace(-180, 180, num=10)
     R, T = look_at_view_transform(dist = 3, elev = 0,azim =azimuth)
     query_cameras = FoVPerspectiveCameras(R=R, T=T, device=device)
     print(query_cameras)
