@@ -160,7 +160,7 @@ class SDS:
                 ### YOUR CODE HERE ###
                 # noise_pred_cond = self.unet(noisy_latents, t, encoder_hidden_states=text_embeddings).sample
                 noise_pred_uncond = self.unet(noisy_latents, t, encoder_hidden_states=text_embeddings_uncond)[0]
-                noise_pred = noise_pred_uncond + guidance_scale * (noise_pred - noise_pred_uncond)
+                noise_pred = noise_pred + guidance_scale * (noise_pred - noise_pred_uncond)
 
         # Compute SDS loss
         w = 1 - self.alphas[t]
