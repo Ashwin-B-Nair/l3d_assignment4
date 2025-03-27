@@ -84,7 +84,7 @@ def optimize_mesh_texture(
     azimuth = np.linspace(-180, 180, 10)
     R, T = look_at_view_transform(dist = 3, elev = 0,azim =azimuth)
     query_cameras = FoVPerspectiveCameras(R=R, T=T, device=device)
-    
+    print(query_cameras)
     # Step 4. Create optimizer training parameters
     optimizer = torch.optim.AdamW(color_field.parameters(), lr=5e-4, weight_decay=0)
     total_iter = 2000
